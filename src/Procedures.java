@@ -3,7 +3,6 @@ import javax.swing.*;
 public class Procedures {
     // Для реализации калькулятора используется трёхмерный массив матриц
     private double[][][] matrix;
-    private int s;
 
     public boolean matrix(int i) {
         MatrixDialogs matrixDialog = new MatrixDialogs();
@@ -91,48 +90,43 @@ public class Procedures {
 
 // Методы, соединяющие программный код с данными. Они публичные и вызываются из главного класса.
 
-    //Дополнительный метод для ввода количества матриц
-    void number() {
-        s = Integer.parseInt(JOptionPane.showInputDialog("Введите количество матриц = "));
+    //Дополнительный метод для ввода количества матриц и их заполнения
+    public double[][][] number() {
+        int s = Integer.parseInt(JOptionPane.showInputDialog("Введите количество матриц = '...'" + "\n" + "При вычислении определителя/транспонировании матрицы введите '1'"));
         matrix = new double[s][][]; // задали количество матриц
-    }
-
-    //Дополнительный метод при s=1
-    void atOne() {
-        matrix = new double[1][][]; // количество матриц = 1
+        for (int i = 0; i < s; i++) {  // заполняем каждую матрицу
+            if (!matrix(i))
+                return null;
+            output(matrix[i]); //выводим заполненную i матрицу на экран
+        }
+        return matrix;
     }
 
     // Вычисление определителя:
     public void determinant() {
-        atOne();
-        if (!matrix(0)) //заполнили матрицу
-            return;
+        double[][][] matrix = number();
+        if (matrix == null) return;
         //проверка корректности введенной матрицы
         if (matrix[0].length != matrix[0][0].length) {
-            JOptionPane.showMessageDialog(null, "Ошибка! Матрица должна быть квадратной!");
+            JOptionPane.showMessageDialog(null, "Ошибка! Для вычисления определителя матрица должна быть квадратной!");
             return;
         }
-        output(matrix[0]); //выводим заполненную матрицу на экран
         JOptionPane.showMessageDialog(null, "Определитель:" + "\n" + qualifier(matrix[0]));
     }
 
     // Сумма:
     public void summation() {
-        number();
-        for (int i = 0; i < s; i++) {  // заполняем каждую матрицу
-            if (!matrix(i))
-                return;
-            output(matrix[i]); //выводим заполненную i матрицу на экран
-        }
+        double[][][] matrix = number();
+        if (matrix == null) return;
         //проверка корректности введенных матриц
-        for (int i = 0; i < s - 1; i++) {
+        for (int i = 0; i < matrix.length - 1; i++) {
             if ((matrix[i].length != matrix[i + 1].length) | (matrix[i][0].length != matrix[i + 1][0].length)) {
                 JOptionPane.showMessageDialog(null, "Ошибка! Для выполнения операции сложения матрицы должны быть одинаковой размерности!");
                 return;
             }
         }
         double[][] sum = matrix[0];
-        for (int i = 1; i < s; i++) {
+        for (int i = 1; i < matrix.length; i++) {
             sum = sum(sum, matrix[i]);
         }
         result(sum); //выводим полученную матрицу на экран
@@ -140,21 +134,17 @@ public class Procedures {
 
     // Разность:
     public void subtraction() {
-        number();
-        for (int i = 0; i < s; i++) {  // заполняем каждую матрицу
-            if (!matrix(i))
-                return;
-            output(matrix[i]); //выводим заполненную i матрицу на экран
-        }
+        double[][][] matrix = number();
+        if (matrix == null) return;
         //проверка корректности введенных матриц
-        for (int i = 0; i < s - 1; i++) {
+        for (int i = 0; i < matrix.length - 1; i++) {
             if ((matrix[i].length != matrix[i + 1].length) | (matrix[i][0].length != matrix[i + 1][0].length)) {
                 JOptionPane.showMessageDialog(null, "Ошибка! Для выполнения операции вычитания матрицы должны быть одинаковой размерности!");
                 return;
             }
         }
         double[][] diff = matrix[0];
-        for (int i = 1; i < s; i++) {
+        for (int i = 1; i < matrix.length; i++) {
             diff = difference(diff, matrix[i]);
         }
         result(diff); //выводим полученную матрицу на экран
@@ -162,21 +152,17 @@ public class Procedures {
 
     // Произведение:
     public void multiplication() {
-        number();
-        for (int i = 0; i < s; i++) {  // заполняем каждую матрицу
-            if (!matrix(i))
-                return;
-            output(matrix[i]); //выводим заполненную i матрицу на экран
-        }
+        double[][][] matrix = number();
+        if (matrix == null) return;
         //проверка корректности введенных матриц
-        for (int i = 0; i < s - 1; i++) {
+        for (int i = 0; i < matrix.length - 1; i++) {
             if (matrix[i][0].length != matrix[i + 1].length) {
-                JOptionPane.showMessageDialog(null, "Ошибка! Количество столбцов первой матрицы должно быть равно количеству строк следущей матрицы!");
+                JOptionPane.showMessageDialog(null, "Ошибка! Для умножения матриц количество столбцов первой матрицы должно быть равно количеству строк следующей матрицы!");
                 return;
             }
         }
         double[][] prod = matrix[0];
-        for (int i = 1; i < s; i++) {
+        for (int i = 1; i < matrix.length; i++) {
             prod = product(prod, matrix[i]);
         }
         result(prod); //выводим полученную матрицу на экран
@@ -184,9 +170,8 @@ public class Procedures {
 
     // Транспонирование:
     public void transposition() {
-        atOne();
-        if (!matrix(0)) //заполнили матрицу
-            return;
+        double[][][] matrix = number();
+        if (matrix == null) return;
         result(overturning(matrix[0])); //выводим полученную матрицу на экран
     }
 
