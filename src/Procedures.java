@@ -1,15 +1,6 @@
 import javax.swing.*;
 
 public class Procedures {
-    // Для реализации калькулятора используется трёхмерный массив матриц
-    private double[][][] matrix;
-
-    public boolean matrix(int i) {
-        MatrixDialogs matrixDialog = new MatrixDialogs();
-        double[][] data = matrixDialog.getData();
-        matrix[i] = data;
-        return data != null;
-    }
 
 // МАТЕМАТИЧЕСКИЕ ОПЕРАЦИИ
 
@@ -90,21 +81,32 @@ public class Procedures {
 
 // Методы, соединяющие программный код с данными. Они публичные и вызываются из главного класса.
 
-    //Дополнительный метод для ввода количества матриц и их заполнения
-    public double[][][] number() {
-        int s = Integer.parseInt(JOptionPane.showInputDialog("Введите количество матриц = '...'" + "\n" + "При вычислении определителя/транспонировании матрицы введите '1'"));
-        matrix = new double[s][][]; // задали количество матриц
+    private double[][][] readMatrices(int s) {
+        double[][][] matrix = new double[s][][]; // задали количество матриц
         for (int i = 0; i < s; i++) {  // заполняем каждую матрицу
-            if (!matrix(i))
+            MatrixDialogs matrixDialog = new MatrixDialogs();
+            double[][] data = matrixDialog.getData();
+            if (data == null)
                 return null;
+            matrix[i] = data;
             output(matrix[i]); //выводим заполненную i матрицу на экран
         }
         return matrix;
     }
 
+    //Дополнительный метод для ввода количества матриц и их заполнения
+    public double[][][] number() {
+        int s = Integer.parseInt(JOptionPane.showInputDialog("Введите количество матриц = '...'" + "\n" + "При вычислении определителя/транспонировании матрицы введите '1'"));
+        return readMatrices(s);
+    }
+
+    public double[][][] one() {
+        return readMatrices(1);
+    }
+
     // Вычисление определителя:
     public void determinant() {
-        double[][][] matrix = number();
+        double[][][] matrix = one();
         if (matrix == null) return;
         //проверка корректности введенной матрицы
         if (matrix[0].length != matrix[0][0].length) {
@@ -170,7 +172,7 @@ public class Procedures {
 
     // Транспонирование:
     public void transposition() {
-        double[][][] matrix = number();
+        double[][][] matrix = one();
         if (matrix == null) return;
         result(overturning(matrix[0])); //выводим полученную матрицу на экран
     }
