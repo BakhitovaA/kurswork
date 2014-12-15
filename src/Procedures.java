@@ -81,6 +81,7 @@ public class Procedures {
 
 // Методы, соединяющие программный код с данными. Они публичные и вызываются из главного класса.
 
+    //Дополнительный метод заполнения матриц
     private double[][][] readMatrices(int s) {
         double[][][] matrix = new double[s][][]; // задали количество матриц
         for (int i = 0; i < s; i++) {  // заполняем каждую матрицу
@@ -94,12 +95,13 @@ public class Procedures {
         return matrix;
     }
 
-    //Дополнительный метод для ввода количества матриц и их заполнения
+    //Дополнительный метод для ввода количества матриц
     public double[][][] number() {
         int s = Integer.parseInt(JOptionPane.showInputDialog("Введите количество матриц = '...'"));
         return readMatrices(s);
     }
-
+    
+    //Дополнительный метод при вычислении определителя/транспонировании матрицы
     public double[][][] one() {
         return readMatrices(1);
     }
