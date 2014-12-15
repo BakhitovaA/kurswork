@@ -96,7 +96,7 @@ public class Procedures {
 
     //Дополнительный метод для ввода количества матриц и их заполнения
     public double[][][] number() {
-        int s = Integer.parseInt(JOptionPane.showInputDialog("Введите количество матриц = '...'" + "\n" + "При вычислении определителя/транспонировании матрицы введите '1'"));
+        int s = Integer.parseInt(JOptionPane.showInputDialog("Введите количество матриц = '...'"));
         return readMatrices(s);
     }
 
